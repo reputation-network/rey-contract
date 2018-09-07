@@ -1,0 +1,33 @@
+{
+  "name": "rey-contract-eth",
+  "version": "0.0.1",
+  "description": "REY contract",
+  "main": "index.coffee",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "coffeescript": "^2.1.0",
+    "fs-extra": "^6.0.1",
+    "ganache-core": "^2.1.1",
+    "lerna": "^2.11.0",
+    "mocha-let": "^0.1.1",
+    "solc": "^0.4.24",
+    "web3": "git+https://github.com/ethereum/web3.js.git#newAbiLib"
+  },
+  "scripts": {
+    "start": "coffee app/index.coffee",
+    "test": "mocha spec/**/** --require coffeescript/register",
+    "init": "rm -rf .geth && geth --datadir .geth init geth/genesis.json && cp geth/keystore/* .geth/keystore",
+    "geth": "geth --mine --minerthreads 2 --datadir .geth --rpc --rpcapi admin,eth,web3,miner,personal --rpcaddr 0.0.0.0 --networkid 666"
+  },
+  "keywords": [
+    "traity",
+    "blockchain"
+  ],
+  "author": "Traity",
+  "license": "ISC"
+}
