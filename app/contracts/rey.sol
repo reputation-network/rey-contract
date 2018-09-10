@@ -82,25 +82,25 @@ contract Rey is Escrow {
   }
 
   function validateMatchingRequestAndProof(Request request, Proof proof) private pure {
-    require(request.readPermission.subject == proof.writePermission.subject);
+    require(request.readPermission.subject == proof.writePermission.subject, 'Permissions subject do not match');
   }
 
   function validateMatchingSession(Transaction transaction) private pure {
-    require(transaction.request.session.subject == transaction.proof.session.subject);
-    require(transaction.request.session.verifier == transaction.proof.session.verifier);
-    require(transaction.request.session.fee == transaction.proof.session.fee);
-    require(transaction.request.session.nonce == transaction.proof.session.nonce);
+    require(transaction.request.session.subject == transaction.proof.session.subject, 'Sessions do not match');
+    require(transaction.request.session.verifier == transaction.proof.session.verifier, 'Sessions do not match');
+    require(transaction.request.session.fee == transaction.proof.session.fee, 'Sessions do not match');
+    require(transaction.request.session.nonce == transaction.proof.session.nonce, 'Sessions do not match');
   }
 
   function validateRequest(Request request) public view returns(bool) {
     validateReadPermission(request.readPermission);
     validateSession(request.session);
     validateSignature(hash(serializeRequest(request)), request.signature, request.readPermission.reader);
-    require(request.session.subject == request.readPermission.subject);
-    require(request.readPermission.source == msg.sender);
+    require(request.session.subject == request.readPermission.subject, 'Session subject does not match');
+    require(request.readPermission.source == msg.sender, 'Invalid source');
     bytes32 channel = super.channel(request.readPermission.reader, request.readPermission.source);
-    require(counters[channel] < request.counter);
-    require(balances[channel].value >= request.value);
+    require(counters[channel] < request.counter, 'Invalid counter');
+    require(balances[channel].value >= request.value, 'Insufficient funds in channel');
     return true;
   }
 
@@ -111,7 +111,7 @@ contract Rey is Escrow {
   }
 
   function validateReadPermission(ReadPermission readPermission) private view {
-    require(readPermission.expiration > now);
+    require(readPermission.expiration > now, 'Read permission has expired');
     validateSignature(hash(serializeReadPermission(readPermission)),
                       readPermission.signature, readPermission.subject);
   }
@@ -126,7 +126,7 @@ contract Rey is Escrow {
   }
 
   function validateSignature(bytes32 h, Signature signature, address addr) private pure {
-    require(ecrecover(h, signature.v, signature.r, signature.s) == addr);
+    require(ecrecover(h, signature.v, signature.r, signature.s) == addr, 'Invalid signature');
   }
 
   function serializeSession(Session session) private pure returns(bytes) {
