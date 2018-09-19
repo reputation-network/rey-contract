@@ -1,5 +1,6 @@
 REY Contract
 ============
+[![Build Status][travis-image]][travis-url]
 
 REY's smart contracts.
 
@@ -36,3 +37,6 @@ To deploy the contract using TestRPC:
 and using Geth (execution will stop, as the node is running in a different process):
 
     RPC_URL=http://localhost:8545 npm start
+
+[travis-image]: https://travis-ci.org/reputation-network/rey-contracts.svg?branch=master
+[travis-url]: https://travis-ci.org/reputation-network/rey-contracts
