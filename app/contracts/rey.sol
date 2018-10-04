@@ -31,6 +31,7 @@ contract Rey is Escrow {
     address reader;
     address source;
     address subject;
+    bytes32 manifest;
     uint expiration;
     Signature signature;
   }
@@ -139,7 +140,7 @@ contract Rey is Escrow {
 
   function serializeReadPermission(ReadPermission readPermission) private pure returns(bytes) {
     return abi.encodePacked(readPermission.reader, readPermission.source,
-                            readPermission.subject, readPermission.expiration);
+                            readPermission.subject, readPermission.manifest, readPermission.expiration);
   }
 
   function serializeProof(Proof proof) private pure returns(bytes) {

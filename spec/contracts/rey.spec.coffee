@@ -32,7 +32,6 @@ describe 'rey', ->
 
   before ->
     @contract = await ic.deploy('rey.sol:Rey')
-    console.log('Rey contract deployed at', @contract.options.address)
 
   beforeEach -> await ic.unlockAccount(@clientAccount)
 
@@ -112,8 +111,9 @@ describe 'rey', ->
     set 'proof',                    ->      [await @writePermission, await @session, await @proofSignature]
     set 'proofSignature',           -> sign([await @writePermission, await @session], @source)
 
-    set 'readPermission',           ->      [@reader, @source, @subject, @expiration, await @readPermissionSignature]
-    set 'readPermissionSignature',  -> sign([@reader, @source, @subject, @expiration], @subject)
+    set 'readPermission',           ->      [@reader, @source, @subject, @manifest, @expiration, await @readPermissionSignature]
+    set 'readPermissionSignature',  -> sign([@reader, @source, @subject, @manifest, @expiration], @subject)
+    set 'manifest',                 -> '0x9dc83d95cbdfbff70d8f19c5cb7143f28a201bd99dc83d95cbdfbff70d8f19c5'
     set 'reader',                   -> @scoreAccount
     set 'source',                   -> @dataProviderAccount
     set 'subject',                  -> @userAccount
