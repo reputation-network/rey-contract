@@ -185,6 +185,10 @@ describe 'rey', ->
                                                                                  @dataProviderAccount).call())[0])
             expect(newChannelBalance.toString()).to.eql(@previousChannelBalance.sub(web3.utils.toBN(@value)).toString())
 
+            transactionEvents = await @contract.getPastEvents 'Cashout', {filter: {subject: @subject}}
+            expect(transactionEvents.length).to.eql(1)
+            expect(transactionEvents[0].returnValues.transaction.request.session.subject).to.eql(@subject)
+
         context 'with more than one valid transaction', ->
           set 'transaction2',          ->      [await @request2, await @proof, await @transactionSignature2]
           set 'transactionSignature2', -> sign([await @request2, await @proof], @verifier)
@@ -215,6 +219,9 @@ describe 'rey', ->
                                                                                  @dataProviderAccount).call())[0])
             expect(newChannelBalance.toString())
               .to.eql(@previousChannelBalance.sub(web3.utils.toBN(@value * 2)).toString())
+
+            transactionEvents = await @contract.getPastEvents 'Cashout', {filter: {subject: @subject}}
+            expect(transactionEvents.length).to.eql(2)
 
         context 'with an invalid transaction', ->
           set 'counter', -> 4

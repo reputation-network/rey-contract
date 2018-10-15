@@ -5,7 +5,6 @@ import './escrow.sol';
 
 contract Rey is Escrow {
   mapping(bytes32 => uint) public counters;
-  Transaction[] public transactionHistory;
 
   struct Transaction {
     Request request;
@@ -56,6 +55,8 @@ contract Rey is Escrow {
     uint8 v;
   }
 
+  event Cashout(address indexed subject, Transaction transaction);
+
   function cashout(Transaction[] transactions) public {
     for (uint i = 0; i < transactions.length; i++) {
       validateTransaction(transactions[i]);
@@ -70,7 +71,7 @@ contract Rey is Escrow {
     bytes32 channel = super.channel(transaction.request.readPermission.reader,
                                     transaction.request.readPermission.source);
     counters[channel] = transaction.request.counter;
-    transactionHistory.push(transaction);
+    emit Cashout(transaction.request.session.subject, transaction);
   }
 
   function validateTransaction(Transaction transaction) private view {
