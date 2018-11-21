@@ -24,7 +24,7 @@
     "start": "coffee app/index.coffee",
     "test": "mocha spec/**/** --require coffeescript/register",
     "init": "rm -rf .geth && geth --datadir .geth init geth/genesis.json && cp geth/keystore/* .geth/keystore",
-    "geth": "geth --mine --minerthreads 2 --datadir .geth --rpc --rpcapi admin,eth,web3,miner,personal --rpcaddr 0.0.0.0 --networkid 666 --rpcvhosts=*"
+    "geth": "geth --mine --minerthreads 2 --datadir .geth --rpc --rpcapi admin,eth,web3,miner,personal,net --rpcaddr 0.0.0.0 --networkid 826989 --rpcvhosts=*"
   },
   "keywords": [
     "traity",
